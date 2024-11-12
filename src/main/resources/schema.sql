@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS category (
+    name VARCHAR(255) PRIMARY KEY,
+    symbol CHAR(1) NOT NULL,
+    description VARCHAR(255)  NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS location (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category_name VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
+    status BOOLEAN DEFAULT true,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    description VARCHAR(255) NOT NULL,
+    coordinates POINT NOT NULL,
+    FOREIGN KEY (category_name) REFERENCES category (name)
+);
