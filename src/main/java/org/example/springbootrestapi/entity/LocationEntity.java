@@ -4,23 +4,25 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
 @Entity
-public class Location {
+@Table(name = "location", schema = "mydatabase")
+public class LocationEntity {
+
+
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @Size(max = 255)
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_name", nullable = false)
-    private Category categoryName;
 
     @NotNull
     @Column(name = "user_id", nullable = false)
@@ -42,6 +44,20 @@ public class Location {
     @NotNull
     @Column(name = "description", nullable = false)
     private String description;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
 
     public String getDescription() {
         return description;
@@ -83,14 +99,6 @@ public class Location {
         this.userId = userId;
     }
 
-    public Category getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(Category categoryName) {
-        this.categoryName = categoryName;
-    }
-
     public String getName() {
         return name;
     }
@@ -99,13 +107,14 @@ public class Location {
         this.name = name;
     }
 
-    public void setId(Long id) {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
 /*
  TODO [Reverse Engineering] create field to map the 'coordinates' column
  Available actions: Define target Java type | Uncomment as is | Remove column mapping

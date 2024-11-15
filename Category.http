@@ -1,2 +1,16 @@
 ###
-GET localhost:8080/categories
+GET http://localhost:8080/categories
+
+###
+GET http://localhost:8080/categories/1
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+{
+  "name": "Category 1",
+  "symbol": "C",
+  "description": "Category 1 description"
+}

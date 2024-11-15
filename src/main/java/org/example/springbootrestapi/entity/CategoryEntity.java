@@ -1,19 +1,24 @@
 package org.example.springbootrestapi.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
-public class Category {
+@Table(name = "category", schema = "mydatabase")
+public class CategoryEntity {
+
 
     @Id
-    private Long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @Size(max = 255)
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -25,6 +30,17 @@ public class Category {
     @NotNull
     @Column(name = "description", nullable = false)
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    private Set<LocationEntity> locations = new LinkedHashSet<>();
+
+    public Set<LocationEntity> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<LocationEntity> locations) {
+        this.locations = locations;
+    }
 
     public String getDescription() {
         return description;
@@ -50,11 +66,11 @@ public class Category {
         this.name = name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Integer getId() {
+        return id;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
