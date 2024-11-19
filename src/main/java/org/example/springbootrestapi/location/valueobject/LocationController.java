@@ -1,9 +1,9 @@
 package org.example.springbootrestapi.location.valueobject;
 
 import org.example.springbootrestapi.location.dto.LocationDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +30,14 @@ public class LocationController {
         return locationService.getPublicLocationsByCategoryId(categoryName);
     }
 
+    @GetMapping("/locations/user")
+    public List<LocationDto> getLocationsByAuthenticatedUser() {
+        return locationService.getLocationsByAuthenticatedUser();
+    }
+
+    @PutMapping("/locations/{id}")
+    public ResponseEntity<Void> updateLocation(@PathVariable int id, @Validated @RequestBody LocationDto locationDto) {
+        locationService.updateLocation(id, locationDto);
+        return ResponseEntity.noContent().build();
+    }
 }

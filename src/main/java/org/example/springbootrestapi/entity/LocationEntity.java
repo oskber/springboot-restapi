@@ -3,6 +3,8 @@ package org.example.springbootrestapi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -115,10 +117,11 @@ public class LocationEntity {
         this.id = id;
     }
 
-/*
- TODO [Reverse Engineering] create field to map the 'coordinates' column
- Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "coordinates", columnDefinition = "point not null")
-    private java.lang.Object coordinates;
-*/
+
+    @Column(name = "coordinate", columnDefinition = "point not null")
+    private Point<G2D> coordinate;
+
+    public Point<G2D> getCoordinate() {
+        return coordinate;
+    }
 }

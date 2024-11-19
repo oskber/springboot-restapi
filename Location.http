@@ -6,3 +6,6 @@ GET http://localhost:8080/locations/1
 
 ###
 GET http://localhost:8080/locations/category/electronics
+
+###
+GET http://localhost:8080/locations/user

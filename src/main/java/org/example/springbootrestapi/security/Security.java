@@ -13,8 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -31,6 +30,9 @@ public class Security {
                                 .requestMatchers(POST, "/categories/**").authenticated()
                                 .requestMatchers(GET, "/locations/**").permitAll()
                                 .requestMatchers(GET, "/locations/category/**").permitAll()
+                                .requestMatchers(GET, "/locations/user/**").hasRole("USER")
+                                .requestMatchers(PUT, "/locations/**").hasRole("USER")
+                                .requestMatchers("/error").permitAll()
                                 .anyRequest().denyAll())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
