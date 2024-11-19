@@ -1,18 +1,27 @@
 package org.example.springbootrestapi.location.valueobject;
 
 import org.example.springbootrestapi.entity.LocationEntity;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
+import org.geolatte.geom.Polygon;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Arrays;
 import java.util.List;
 
 public interface LocationRepository extends ListCrudRepository<LocationEntity, Integer> {
-    List<LocationEntity> findByStatusTrue();
+    List<LocationEntity> findByStatusTrueAndDeletedFalse();
 
-    List<LocationEntity> findByStatusTrueAndCategoryName(String categoryName);
+    List<LocationEntity> findByStatusTrueAndCategoryNameAndDeletedFalse(String categoryName);
 
+    List<LocationEntity> findByUserIdAndDeletedFalse(int userId);
 
-    List<LocationEntity> findByUserId(int userId);
+    List<LocationEntity> findByDeletedTrue();
+
+    @Query("SELECT l FROM LocationEntity l WHERE ST_Distance_Sphere(ST_GeomFromText(CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326), l.coordinate) <= :radius")
+    List<LocationEntity> findAllWithinRadius(@Param("lon") double lon, @Param("lat") double lat, @Param("radius") double radius);
 
     //<T> List<T> findByStatusTrueAndCategoryName(String categoryName, Class<T> type);
 }

@@ -53,6 +53,8 @@ public class LocationEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
+    private boolean deleted = false;
+
     public CategoryEntity getCategory() {
         return category;
     }
@@ -123,5 +125,13 @@ public class LocationEntity {
 
     public Point<G2D> getCoordinate() {
         return coordinate;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
     }
 }

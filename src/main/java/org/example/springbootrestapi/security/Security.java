@@ -26,12 +26,14 @@ public class Security {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(GET, "/categories/**").permitAll()
+                                .requestMatchers(GET, "/index.html", "/js/**").permitAll()
                                 .requestMatchers(POST, "/categories").hasRole("ADMIN")
                                 .requestMatchers(POST, "/categories/**").authenticated()
                                 .requestMatchers(GET, "/locations/**").permitAll()
                                 .requestMatchers(GET, "/locations/category/**").permitAll()
                                 .requestMatchers(GET, "/locations/user/**").hasRole("USER")
                                 .requestMatchers(PUT, "/locations/**").hasRole("USER")
+                                .requestMatchers(GET, "/locations/area/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().denyAll())
                 .sessionManagement(session ->

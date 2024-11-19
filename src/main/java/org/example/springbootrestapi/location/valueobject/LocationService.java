@@ -4,6 +4,8 @@ import org.example.springbootrestapi.category.valueobject.CategoryRepository;
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
 import org.example.springbootrestapi.location.dto.LocationDto;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class LocationService {
     }
 
     public List<LocationDto> getAllPublicLocations() {
-        return locationRepository.findByStatusTrue().stream()
+        return locationRepository.findByStatusTrueAndDeletedFalse().stream()
                 .map(LocationDto::fromLocation)
                 .toList();
     }
@@ -34,7 +36,7 @@ public class LocationService {
     }
 
     public List<LocationDto> getPublicLocationsByCategoryId(String categoryName) {
-        return locationRepository.findByStatusTrueAndCategoryName(categoryName).stream()
+        return locationRepository.findByStatusTrueAndCategoryNameAndDeletedFalse(categoryName).stream()
                 .map(LocationDto::fromLocation)
                 .toList();
     }
@@ -43,7 +45,7 @@ public class LocationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         int userId = getUserIdByUsername(username);
-        return locationRepository.findByUserId(userId).stream()
+        return locationRepository.findByUserIdAndDeletedFalse(userId).stream()
                 .map(LocationDto::fromLocation)
                 .toList();
     }
@@ -52,6 +54,7 @@ public class LocationService {
         return 1;
     }
 
+    //Update and soft delete location
     public void updateLocation(int id, LocationDto locationDto) {
         LocationEntity location = locationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Location not found"));
@@ -63,10 +66,20 @@ public class LocationService {
         CategoryEntity category = categoryRepository.findByName(locationDto.categoryName())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
+        if (locationDto.deleted() != null) {
+            location.setDeleted(locationDto.deleted());
+        }
+
         location.setName(locationDto.name());
         location.setDescription(locationDto.description());
         location.setCategory(category);
         location.setStatus(locationDto.status());
         locationRepository.save(location);
+    }
+
+    public List<LocationDto> getLocationsWithinRadius(double lon, double lat, double radius) {
+        return locationRepository.findAllWithinRadius(lon, lat, radius).stream()
+                .map(LocationDto::fromLocation)
+                .toList();
     }
 }
