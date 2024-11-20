@@ -4,8 +4,6 @@ import org.example.springbootrestapi.category.valueobject.CategoryRepository;
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
 import org.example.springbootrestapi.location.dto.LocationDto;
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Point;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

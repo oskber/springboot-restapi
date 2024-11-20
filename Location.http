@@ -9,3 +9,6 @@ GET http://localhost:8080/locations/category/electronics
 
 ###
 GET http://localhost:8080/locations/user
+
+###
+GET http://localhost:8080/locations/area?lat=40.785091&lon=-73.968285&radius=5000

@@ -1,17 +1,10 @@
 package org.example.springbootrestapi.location.valueobject;
 
 import org.example.springbootrestapi.location.dto.LocationDto;
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Geometries;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.builder.DSL;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
-import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @RestController
 public class LocationController {
@@ -50,6 +43,5 @@ public class LocationController {
     @GetMapping("/locations/area")
     public List<LocationDto> getLocationsWithinRadius(@RequestParam double lon, @RequestParam double lat, @RequestParam double radius) {
         return locationService.getLocationsWithinRadius(lon, lat, radius);
-
     }
 }
