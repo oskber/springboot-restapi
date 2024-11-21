@@ -6,9 +6,9 @@ TRUNCATE TABLE location;
 SET FOREIGN_KEY_CHECKS = 1;
 
 INSERT INTO category (name, symbol, description)
-VALUES ('Electronics', 'E', 'Electronic items'),
-       ('Books', 'B', 'Books and literature'),
-       ('Clothing', 'C', 'Apparel and accessories');
+VALUES ('Electronics', '❤️', 'Electronic items'),
+       ('Books', '❤️', 'Books and literature'),
+       ('Clothing', '❤️', 'Apparel and accessories');
 
 INSERT INTO location (name, category_id, user_id, status, description, coordinate)
 VALUES

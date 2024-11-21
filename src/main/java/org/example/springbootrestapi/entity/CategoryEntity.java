@@ -24,7 +24,7 @@ public class CategoryEntity {
 
     @NotNull
     @Column(name = "symbol", nullable = false)
-    private Character symbol;
+    private String symbol;
 
     @Size(max = 255)
     @NotNull
@@ -50,11 +50,11 @@ public class CategoryEntity {
         this.description = description;
     }
 
-    public Character getSymbol() {
+    public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(Character symbol) {
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 

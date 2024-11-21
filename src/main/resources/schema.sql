@@ -6,7 +6,7 @@ CREATE TABLE category
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
-    symbol      CHAR(1)                                 NOT NULL,
+    symbol      VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     description VARCHAR(255)                            NOT NULL
 );
 
@@ -22,6 +22,7 @@ CREATE TABLE location
     date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     description  VARCHAR(255)                            NOT NULL,
     coordinate   GEOMETRY                                NOT NULL SRID 4326,
+    deleted      BOOLEAN   DEFAULT false,
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE
 );
 
