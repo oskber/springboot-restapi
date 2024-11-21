@@ -1,9 +1,11 @@
-package org.example.springbootrestapi.location.valueobject;
+package org.example.springbootrestapi.controller;
 
-import org.example.springbootrestapi.location.dto.LocationDto;
+import org.example.springbootrestapi.dto.LocationDto;
+import org.example.springbootrestapi.service.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -43,5 +45,6 @@ public class LocationController {
     @GetMapping("/locations/area")
     public List<LocationDto> getLocationsWithinRadius(@RequestParam double lon, @RequestParam double lat, @RequestParam double radius) {
         return locationService.getLocationsWithinRadius(lon, lat, radius);
+
     }
 }

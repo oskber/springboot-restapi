@@ -1,7 +1,8 @@
-package org.example.springbootrestapi.category.valueobject;
+package org.example.springbootrestapi.service;
 
-import org.example.springbootrestapi.category.dto.CategoryDto;
+import org.example.springbootrestapi.dto.CategoryDto;
 import org.example.springbootrestapi.entity.CategoryEntity;
+import org.example.springbootrestapi.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

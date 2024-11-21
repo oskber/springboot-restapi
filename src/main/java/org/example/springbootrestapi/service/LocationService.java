@@ -1,9 +1,10 @@
-package org.example.springbootrestapi.location.valueobject;
+package org.example.springbootrestapi.service;
 
-import org.example.springbootrestapi.category.valueobject.CategoryRepository;
+import org.example.springbootrestapi.repository.CategoryRepository;
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
-import org.example.springbootrestapi.location.dto.LocationDto;
+import org.example.springbootrestapi.dto.LocationDto;
+import org.example.springbootrestapi.repository.LocationRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
