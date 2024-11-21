@@ -1,4 +1,4 @@
-package org.example.springbootrestapi.location.dto;
+package org.example.springbootrestapi.dto;
 
 import org.example.springbootrestapi.entity.LocationEntity;
 import org.geolatte.geom.G2D;

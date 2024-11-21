@@ -1,4 +1,4 @@
-package org.example.springbootrestapi.category.valueobject;
+package org.example.springbootrestapi.repository;
 
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.springframework.data.repository.ListCrudRepository;

@@ -1,4 +1,4 @@
-package org.example.springbootrestapi.location;
+package org.example.springbootrestapi.config;
 
 import org.geolatte.geom.json.GeolatteGeomModule;
 import org.springframework.context.annotation.Bean;

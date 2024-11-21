@@ -1,17 +1,12 @@
-package org.example.springbootrestapi.location.valueobject;
+package org.example.springbootrestapi.controller;
 
-import org.example.springbootrestapi.location.dto.LocationDto;
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Geometries;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.builder.DSL;
+import org.example.springbootrestapi.dto.LocationDto;
+import org.example.springbootrestapi.service.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @RestController
 public class LocationController {

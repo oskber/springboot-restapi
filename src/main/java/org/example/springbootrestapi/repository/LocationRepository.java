@@ -1,14 +1,10 @@
-package org.example.springbootrestapi.location.valueobject;
+package org.example.springbootrestapi.repository;
 
 import org.example.springbootrestapi.entity.LocationEntity;
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.Polygon;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Arrays;
 import java.util.List;
 
 public interface LocationRepository extends ListCrudRepository<LocationEntity, Integer> {

@@ -1,6 +1,7 @@
-package org.example.springbootrestapi.category.valueobject;
+package org.example.springbootrestapi.controller;
 
-import org.example.springbootrestapi.category.dto.CategoryDto;
+import org.example.springbootrestapi.dto.CategoryDto;
+import org.example.springbootrestapi.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

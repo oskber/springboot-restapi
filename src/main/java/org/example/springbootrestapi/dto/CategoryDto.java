@@ -1,4 +1,4 @@
-package org.example.springbootrestapi.category.dto;
+package org.example.springbootrestapi.dto;
 import org.example.springbootrestapi.entity.CategoryEntity;
 
 public record CategoryDto(String name, Character symbol, String description) {
