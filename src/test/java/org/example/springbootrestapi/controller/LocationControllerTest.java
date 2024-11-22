@@ -38,7 +38,7 @@ class LocationControllerTest {
 
     @Test
     @WithMockUser(username = "user", roles = {"USER"})
-    void getPrivateLocation() throws Exception {
+    void getLocationById() throws Exception {
         mockMvc.perform(get("/locations/1"))
                 .andExpect(status().isOk());
     }
