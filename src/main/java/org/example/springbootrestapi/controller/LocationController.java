@@ -1,10 +1,12 @@
 package org.example.springbootrestapi.controller;
 
 import org.example.springbootrestapi.dto.LocationDto;
+import org.example.springbootrestapi.entity.LocationEntity;
 import org.example.springbootrestapi.service.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.net.URI;
 
 import java.util.List;
 
@@ -34,6 +36,12 @@ public class LocationController {
     @GetMapping("/locations/user")
     public List<LocationDto> getLocationsByAuthenticatedUser() {
         return locationService.getLocationsByAuthenticatedUser();
+    }
+
+    @PostMapping("/locations")
+    public ResponseEntity<Void> createLocation(@RequestBody LocationDto locationDto) {
+        LocationEntity location = locationService.createLocation(locationDto);
+        return ResponseEntity.created(URI.create("/locations/" + location.getId())).build();
     }
 
     @PutMapping("/locations/{id}")
