@@ -2,7 +2,9 @@ package org.example.springbootrestapi.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +19,7 @@ import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@EnableMethodSecurity
 public class Security {
 
     @Bean
@@ -33,7 +36,19 @@ public class Security {
                                 .requestMatchers(GET, "/locations/category/**").permitAll()
                                 .requestMatchers(GET, "/locations/user/**").hasRole("USER")
                                 .requestMatchers(PUT, "/locations/**").hasRole("USER")
+                                .requestMatchers(POST, "/locations").hasRole("USER")
                                 .requestMatchers(GET, "/locations/area/**").permitAll()
+                                .requestMatchers(
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html")
+                                .permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().denyAll())
                 .sessionManagement(session ->

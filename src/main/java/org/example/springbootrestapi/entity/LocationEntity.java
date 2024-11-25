@@ -124,6 +124,10 @@ public class LocationEntity {
     @Column(name = "coordinate", columnDefinition = "point not null")
     private Point<G2D> coordinate;
 
+    public void setCoordinate(Point<G2D> coordinate) {
+        this.coordinate = coordinate;
+    }
+
     public Point<G2D> getCoordinate() {
         return coordinate;
     }
@@ -135,4 +139,5 @@ public class LocationEntity {
     public Boolean getDeleted() {
         return deleted;
     }
+
 }

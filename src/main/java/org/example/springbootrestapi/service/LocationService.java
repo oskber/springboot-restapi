@@ -5,11 +5,14 @@ import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
 import org.example.springbootrestapi.dto.LocationDto;
 import org.example.springbootrestapi.repository.LocationRepository;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Geometries;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+
+import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @Service
 public class LocationService {
@@ -51,6 +54,34 @@ public class LocationService {
 
     private int getUserIdByUsername(String username) {
         return 1;
+    }
+
+    public LocationEntity createLocation(LocationDto locationDto) {
+        if (locationDto.coordinates().size() != 2) {
+            throw new IllegalArgumentException("Invalid coordinates");
+        }
+
+        double lon = locationDto.coordinates().get(0);
+        double lat = locationDto.coordinates().get(1);
+
+        if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+            throw new IllegalArgumentException("Invalid latitude or longitude");
+        }
+
+        LocationEntity location = new LocationEntity();
+        var geo = Geometries.mkPoint(new G2D(lon, lat), WGS84);
+        location.setCoordinate(geo);
+        location.setName(locationDto.name());
+        location.setDescription(locationDto.description());
+        location.setUserId(locationDto.userId());
+        location.setStatus(locationDto.status());
+        location.setDeleted(locationDto.deleted());
+
+        CategoryEntity category = categoryRepository.findByName(locationDto.categoryName())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        location.setCategory(category);
+
+        return locationRepository.save(location);
     }
 
     //Update and soft delete location

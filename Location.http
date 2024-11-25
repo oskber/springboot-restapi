@@ -5,10 +5,38 @@ GET http://localhost:8080/locations
 GET http://localhost:8080/locations/1
 
 ###
-GET http://localhost:8080/locations/category/electronics
+GET http://localhost:8080/locations/category/museums
 
 ###
 GET http://localhost:8080/locations/user
 
 ###
 GET http://localhost:8080/locations/area?lat=40.785091&lon=-73.968285&radius=5000
+
+
+###
+POST http://localhost:8080/locations
+Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+
+{
+  "name": "test",
+  "description": "A major test intersection in New test City",
+  "categoryName": "Squares",
+  "status": false,
+  "coordinate": {
+    "type": "Point",
+    "crs": {
+      "type": "name",
+      "properties": {
+        "name": "EPSG:4326"
+      }
+    },
+    "coordinates": [
+      40.758896,
+      -73.98513
+    ]
+  },
+  "deleted": false,
+  "userId": 4
+}
