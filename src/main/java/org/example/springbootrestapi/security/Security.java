@@ -38,6 +38,17 @@ public class Security {
                                 .requestMatchers(PUT, "/locations/**").hasRole("USER")
                                 .requestMatchers(POST, "/locations").hasRole("USER")
                                 .requestMatchers(GET, "/locations/area/**").permitAll()
+                                .requestMatchers(
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html")
+                                .permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().denyAll())
                 .sessionManagement(session ->

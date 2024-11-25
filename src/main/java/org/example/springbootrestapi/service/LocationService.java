@@ -10,8 +10,6 @@ import org.geolatte.geom.Geometries;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
@@ -59,12 +57,17 @@ public class LocationService {
     }
 
     public LocationEntity createLocation(LocationDto locationDto) {
-        float lat = (float) locationDto.coordinate().getPosition().getLat();
-        float lon = (float) locationDto.coordinate().getPosition().getLon();
+        if (locationDto.coordinates().size() != 2) {
+            throw new IllegalArgumentException("Invalid coordinates");
+        }
+
+        double lon = locationDto.coordinates().get(0);
+        double lat = locationDto.coordinates().get(1);
 
         if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
             throw new IllegalArgumentException("Invalid latitude or longitude");
         }
+
         LocationEntity location = new LocationEntity();
         var geo = Geometries.mkPoint(new G2D(lon, lat), WGS84);
         location.setCoordinate(geo);
