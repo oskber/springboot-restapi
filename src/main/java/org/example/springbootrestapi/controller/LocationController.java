@@ -53,11 +53,6 @@ public class LocationController {
                 .toUri();
         return ResponseEntity.created(locationUri).build();
     }
-//    @PostMapping("/locations")
-//    public ResponseEntity<Void> createLocation(@RequestBody LocationDto locationDto) {
-//        LocationEntity location = locationService.createLocation(locationDto);
-//        return ResponseEntity.created(URI.create("/locations/" + location.getId())).build();
-//    }
 
     @PutMapping("/locations/{id}")
     public ResponseEntity<Void> updateLocation(@PathVariable int id, @Validated @RequestBody LocationDto locationDto) {
@@ -68,6 +63,5 @@ public class LocationController {
     @GetMapping("/locations/area")
     public List<LocationDto> getLocationsWithinRadius(@RequestParam double lon, @RequestParam double lat, @RequestParam double radius) {
         return locationService.getLocationsWithinRadius(lon, lat, radius);
-
     }
 }

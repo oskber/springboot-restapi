@@ -3,10 +3,12 @@ package org.example.springbootrestapi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Getter
 @Entity
 @Table(name = "category", schema = "mydatabase")
 public class CategoryEntity {
@@ -34,40 +36,20 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category")
     private Set<LocationEntity> locations = new LinkedHashSet<>();
 
-    public Set<LocationEntity> getLocations() {
-        return locations;
-    }
-
     public void setLocations(Set<LocationEntity> locations) {
         this.locations = locations;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public void setId(Integer id) {

@@ -71,7 +71,7 @@ class LocationControllerTest {
     """;
 
         LocationEntity mockLocation = new LocationEntity();
-        mockLocation.setId(1); // Set a valid ID
+        mockLocation.setId(1);
         mockLocation.setName("test");
         mockLocation.setDescription("A major test intersection in New test City");
         mockLocation.setUserId(4);
