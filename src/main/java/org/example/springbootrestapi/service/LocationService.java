@@ -1,5 +1,7 @@
 package org.example.springbootrestapi.service;
 
+import lombok.extern.slf4j.Slf4j;
+import com.google.common.util.concurrent.RateLimiter;
 import org.example.springbootrestapi.repository.CategoryRepository;
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
@@ -7,55 +9,82 @@ import org.example.springbootrestapi.dto.LocationDto;
 import org.example.springbootrestapi.repository.LocationRepository;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Geometries;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
+
 import java.util.List;
+import java.util.Locale;
 
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @Service
+@Slf4j
 public class LocationService {
     private final LocationRepository locationRepository;
     private final CategoryRepository categoryRepository;
+    private final RestClient restClient;
+    private final RateLimiter rateLimiter = RateLimiter.create(1.0);
 
-    public LocationService(LocationRepository locationRepository, CategoryRepository categoryRepository) {
+    public LocationService(LocationRepository locationRepository, CategoryRepository categoryRepository, RestClient restClient) {
         this.locationRepository = locationRepository;
         this.categoryRepository = categoryRepository;
+        this.restClient = restClient;
     }
 
+    public String getAddressFromCoordinates(double lat, double lon) {
+        String apiKey = "674585f2b5a1c082814115nrj37d824";
+        String url = String.format(Locale.US, "https://geocode.maps.co/reverse?lat=%.7f&lon=%.7f&api_key=%s", lat, lon, apiKey);
+
+        rateLimiter.acquire();
+
+        try {
+            log.info("Fetching address from URL: {}", url);
+            String response = restClient.get().uri(url).retrieve().body(String.class);
+            log.info("Received response: {}", response);
+            return response;
+        } catch (RestClientResponseException e) {
+            log.error("Error while fetching address from coordinates", e);
+            return "Address not found";
+        }
+    }
+
+
     public List<LocationDto> getAllPublicLocations() {
-        return locationRepository.findByStatusTrueAndDeletedFalse().stream()
-                .map(LocationDto::fromLocation)
-                .toList();
+        return locationRepository.findByStatusTrueAndDeletedFalse().stream().map(LocationDto::fromLocation).toList();
     }
 
 
     public LocationDto getPublicLocationById(int id) {
-        return locationRepository.findById(id)
-                .map(LocationDto::fromLocation)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+        return locationRepository.findById(id).map(location -> {
+            G2D position = location.getCoordinate().getPosition();
+            double lat = position.getLat();
+            double lon = position.getLon();
+            String address = getAddressFromCoordinates(lon, lat);
+            location.setAddress(address);
+            return LocationDto.fromLocation(location);
+        }).orElseThrow(() -> new IllegalArgumentException("Location not found"));
     }
 
     public List<LocationDto> getPublicLocationsByCategoryId(String categoryName) {
-        return locationRepository.findByStatusTrueAndCategoryNameAndDeletedFalse(categoryName).stream()
-                .map(LocationDto::fromLocation)
-                .toList();
+        return locationRepository.findByStatusTrueAndCategoryNameAndDeletedFalse(categoryName).stream().map(LocationDto::fromLocation).toList();
     }
 
     public List<LocationDto> getLocationsByAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         int userId = getUserIdByUsername(username);
-        return locationRepository.findByUserIdAndDeletedFalse(userId).stream()
-                .map(LocationDto::fromLocation)
-                .toList();
+        return locationRepository.findByUserIdAndDeletedFalse(userId).stream().map(LocationDto::fromLocation).toList();
     }
 
     private int getUserIdByUsername(String username) {
         return 1;
     }
 
+    @Retryable(maxAttempts = 2)
     public LocationEntity createLocation(LocationDto locationDto) {
         if (locationDto.coordinates().size() != 2) {
             throw new IllegalArgumentException("Invalid coordinates");
@@ -77,24 +106,22 @@ public class LocationService {
         location.setStatus(locationDto.status());
         location.setDeleted(locationDto.deleted());
 
-        CategoryEntity category = categoryRepository.findByName(locationDto.categoryName())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        CategoryEntity category = categoryRepository.findByName(locationDto.categoryName()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
         location.setCategory(category);
 
         return locationRepository.save(location);
     }
 
+    @Retryable(maxAttempts = 2)
     //Update and soft delete location
     public void updateLocation(int id, LocationDto locationDto) {
-        LocationEntity location = locationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Location not found"));
+        LocationEntity location = locationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Location not found"));
 
         if (locationDto.name() == null) {
             throw new IllegalArgumentException("Location name must not be null");
         }
 
-        CategoryEntity category = categoryRepository.findByName(locationDto.categoryName())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        CategoryEntity category = categoryRepository.findByName(locationDto.categoryName()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
         if (locationDto.deleted() != null) {
             location.setDeleted(locationDto.deleted());
@@ -107,9 +134,8 @@ public class LocationService {
         locationRepository.save(location);
     }
 
+    @Retryable(maxAttempts = 2)
     public List<LocationDto> getLocationsWithinRadius(double lon, double lat, double radius) {
-        return locationRepository.findAllWithinRadius(lon, lat, radius).stream()
-                .map(LocationDto::fromLocation)
-                .toList();
+        return locationRepository.findAllWithinRadius(lon, lat, radius).stream().map(LocationDto::fromLocation).toList();
     }
 }

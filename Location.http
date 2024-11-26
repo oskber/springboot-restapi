@@ -24,19 +24,10 @@ Authorization: Basic YWRtaW46cGFzc3dvcmQ=
   "description": "A major test intersection in New test City",
   "categoryName": "Squares",
   "status": false,
-  "coordinate": {
-    "type": "Point",
-    "crs": {
-      "type": "name",
-      "properties": {
-        "name": "EPSG:4326"
-      }
-    },
-    "coordinates": [
-      40.758896,
-      -73.98513
-    ]
-  },
+  "coordinates": [
+    -73.98513,
+    40.758896
+  ],
   "deleted": false,
   "userId": 4
 }
