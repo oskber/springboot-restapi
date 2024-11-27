@@ -2,6 +2,7 @@ package org.example.springbootrestapi.service;
 
 import lombok.extern.slf4j.Slf4j;
 import com.google.common.util.concurrent.RateLimiter;
+import org.example.springbootrestapi.exception.LocationNotFoundException;
 import org.example.springbootrestapi.repository.CategoryRepository;
 import org.example.springbootrestapi.entity.CategoryEntity;
 import org.example.springbootrestapi.entity.LocationEntity;
@@ -66,7 +67,10 @@ public class LocationService {
             String address = getAddressFromCoordinates(lon, lat);
             location.setAddress(address);
             return LocationDto.fromLocation(location);
-        }).orElseThrow(() -> new IllegalArgumentException("Location not found"));
+        }).orElseThrow(() -> {
+            log.error("Location not found with id: {}", id);
+            return new LocationNotFoundException(id);
+        });
     }
 
     public List<LocationDto> getPublicLocationsByCategoryId(String categoryName) {
