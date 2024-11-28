@@ -21,9 +21,9 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-    @GetMapping("/categories/{id}")
-    public CategoryDto getCategoryById(@PathVariable int id) {
-        return categoryService.getCategoryById(id);
+    @GetMapping("/categories/{name}")
+    public CategoryDto getCategoryByName(@PathVariable String name) {
+        return categoryService.getCategoryByName(name);
     }
 
     @PostMapping("/categories")
