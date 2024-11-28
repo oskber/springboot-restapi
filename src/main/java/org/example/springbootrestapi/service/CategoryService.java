@@ -21,8 +21,8 @@ public class CategoryService {
                 .toList();
     }
 
-    public CategoryDto getCategoryById(int id) {
-        return categoryRepository.findById(id)
+    public CategoryDto getCategoryByName(String name) {
+        return categoryRepository.findByName(name)
                 .map(CategoryDto::fromCategory)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
     }

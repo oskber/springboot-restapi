@@ -2,7 +2,10 @@
 GET http://localhost:8080/categories
 
 ###
-GET http://localhost:8080/categories/1
+GET http://localhost:8080/categories/parks
+
+###
+GET http://localhost:8080/categories/monuments
 
 ###
 POST http://localhost:8080/categories
