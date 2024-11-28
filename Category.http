@@ -10,7 +10,7 @@ GET http://localhost:8080/categories/monuments
 ###
 POST http://localhost:8080/categories
 Content-Type: application/json
-Authorization: Bearer eyJraWQiOiJwNGJLWTBEWXBtcXhQbmdvNnNnOTl5S2pBL3RsUmRRYVk0WDZEWUJrK1hNPSIsImFsZyI6IkVTMjU2In0.eyJzdWIiOiJhZG1pbiIsImlzcyI6Imh0dHBzOi8vZnVuZ292ZXIub3JnL2F1dGgiLCJpYXQiOjE3MzI4MDE0MTcsImV4cCI6MTczMjgwMjMxNywiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3QiXSwic2NvcGUiOiJhZG1pbiIsInJvbGVzIjpbImFkbWluIl19.EM61pKVhm4YvtKgFHuMmkPu9gnrBBGcnjavXkwynsdDekcdJF5-m58jdTpjJdYUh8t2KfP57qkM0J0FqURrnMg
+Authorization: Bearer < your token >
 
 {
   "name": "Category 1",
