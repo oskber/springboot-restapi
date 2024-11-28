@@ -28,6 +28,10 @@ public class CategoryService {
     }
 
     public int addCategory(CategoryDto categoryDto) {
+        if (categoryRepository.findByName(categoryDto.name()).isPresent()) {
+            throw new IllegalArgumentException("Category with the same name already exists");
+        }
+
         CategoryEntity category = new CategoryEntity();
         category.setName(categoryDto.name());
         category.setSymbol(categoryDto.symbol());
