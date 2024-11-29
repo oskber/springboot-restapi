@@ -10,6 +10,7 @@ import org.example.springbootrestapi.dto.LocationDto;
 import org.example.springbootrestapi.repository.LocationRepository;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Geometries;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +37,7 @@ public class LocationService {
         this.restClient = restClient;
     }
 
+    @Cacheable("address")
     public String getAddressFromCoordinates(double lat, double lon) {
         String apiKey = "674585f2b5a1c082814115nrj37d824";
         String url = String.format(Locale.US, "https://geocode.maps.co/reverse?lat=%.7f&lon=%.7f&api_key=%s", lat, lon, apiKey);
@@ -53,12 +55,12 @@ public class LocationService {
         }
     }
 
-
+    @Cacheable("locations")
     public List<LocationDto> getAllPublicLocations() {
         return locationRepository.findByStatusTrueAndDeletedFalse().stream().map(LocationDto::fromLocation).toList();
     }
 
-
+    @Cacheable("locations")
     public LocationDto getPublicLocationById(int id) {
         return locationRepository.findById(id).map(location -> {
             G2D position = location.getCoordinate().getPosition();
@@ -73,6 +75,7 @@ public class LocationService {
         });
     }
 
+    @Cacheable("locations")
     public List<LocationDto> getPublicLocationsByCategoryId(String categoryName) {
         return locationRepository.findByStatusTrueAndCategoryNameAndDeletedFalse(categoryName).stream().map(LocationDto::fromLocation).toList();
     }
@@ -138,6 +141,7 @@ public class LocationService {
         locationRepository.save(location);
     }
 
+    @Cacheable("locations")
     @Retryable(maxAttempts = 2)
     public List<LocationDto> getLocationsWithinRadius(double lon, double lat, double radius) {
         return locationRepository.findAllWithinRadius(lon, lat, radius).stream().map(LocationDto::fromLocation).toList();

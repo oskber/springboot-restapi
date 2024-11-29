@@ -42,6 +42,7 @@ public class Security {
                                 .requestMatchers(PUT, "/locations/**").hasAuthority("user")
                                 .requestMatchers(POST, "/locations").hasAuthority("user")
                                 .requestMatchers(GET, "/locations/area/**").permitAll()
+                                .requestMatchers(GET, "/cache").permitAll()
                                 .requestMatchers(
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",
@@ -73,22 +74,22 @@ public class Security {
         return jwtConverter;
     }
 
-    @Bean
-    public UserDetailsService users() {
-        PasswordEncoder encoder = passwordEncoder();
-        UserDetails user = User.builder()
-                .username("user")
-                .password(encoder.encode("password"))
-                .authorities("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(encoder.encode("password"))
-                .authorities("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//    @Bean
+//    public UserDetailsService users() {
+//        PasswordEncoder encoder = passwordEncoder();
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password(encoder.encode("password"))
+//                .authorities("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(encoder.encode("password"))
+//                .authorities("USER", "ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
