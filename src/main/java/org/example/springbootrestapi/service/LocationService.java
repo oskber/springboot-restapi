@@ -37,6 +37,7 @@ public class LocationService {
         this.restClient = restClient;
     }
 
+    @Retryable(maxAttempts = 2)
     @Cacheable("address")
     public String getAddressFromCoordinates(double lat, double lon) {
         String apiKey = "674585f2b5a1c082814115nrj37d824";
@@ -60,6 +61,7 @@ public class LocationService {
         return locationRepository.findByStatusTrueAndDeletedFalse().stream().map(LocationDto::fromLocation).toList();
     }
 
+    @Retryable(maxAttempts = 2)
     @Cacheable("locations")
     public LocationDto getPublicLocationById(int id) {
         return locationRepository.findById(id).map(location -> {
