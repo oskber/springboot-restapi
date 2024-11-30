@@ -18,4 +18,4 @@ VALUES
     ('Eiffel Tower', 2, 1, true, 'A wrought-iron lattice tower in Paris', ST_GeomFromText('POINT(2.294351 48.858844)', 4326)),
     ('Louvre Museum', 3, 3, true, 'The world\'s largest art museum in Paris', ST_GeomFromText('POINT(2.337644 48.860611)', 4326)),
     ('Times Square', 4, 4, true, 'A major commercial intersection in New York City', ST_GeomFromText('POINT(-73.985130 40.758896)', 4326)),
-    ('Statue of Liberty', 5, 5, false, 'A colossal neoclassical sculpture on Liberty Island', ST_GeomFromText('POINT(-74.044502 40.689247)', 4326));
+    ('Statue of Liberty', 5, 1, false, 'A colossal neoclassical sculpture on Liberty Island', ST_GeomFromText('POINT(-74.044502 40.689247)', 4326));
