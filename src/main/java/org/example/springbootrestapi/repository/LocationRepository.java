@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface LocationRepository extends ListCrudRepository<LocationEntity, Integer> {
@@ -18,6 +19,8 @@ public interface LocationRepository extends ListCrudRepository<LocationEntity, I
 
     @Query("SELECT l FROM LocationEntity l WHERE ST_Distance_Sphere(ST_GeomFromText(CONCAT('POINT(', :lon, ' ', :lat, ')'), 4326), l.coordinate) <= :radius")
     List<LocationEntity> findAllWithinRadius(@Param("lon") double lon, @Param("lat") double lat, @Param("radius") double radius);
+
+    List<LocationEntity> findByUserId(int userId);
 
     //<T> List<T> findByStatusTrueAndCategoryName(String categoryName, Class<T> type);
 }

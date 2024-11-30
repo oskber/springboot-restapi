@@ -33,12 +33,12 @@ public class LocationController {
 
     @GetMapping("/locations/category/{categoryName}")
     public List<LocationDto> getPublicLocationsByCategoryId(@PathVariable String categoryName) {
-        return locationService.getPublicLocationsByCategoryId(categoryName);
+        return locationService.getPublicLocationsByCategoryName(categoryName);
     }
 
-    @GetMapping("/locations/user")
-    public List<LocationDto> getLocationsByAuthenticatedUser() {
-        return locationService.getLocationsByAuthenticatedUser();
+    @GetMapping("/locations/user/all")
+    public List<LocationDto> getAllLocationsByAuthenticatedUser() {
+        return locationService.getAllLocationsByAuthenticatedUser();
     }
 
     @PostMapping("/locations")

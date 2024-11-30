@@ -14,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
@@ -78,16 +79,23 @@ public class LocationService {
     }
 
     @Cacheable("locations")
-    public List<LocationDto> getPublicLocationsByCategoryId(String categoryName) {
+    public List<LocationDto> getPublicLocationsByCategoryName(String categoryName) {
         return locationRepository.findByStatusTrueAndCategoryNameAndDeletedFalse(categoryName).stream().map(LocationDto::fromLocation).toList();
     }
 
-    public List<LocationDto> getLocationsByAuthenticatedUser() {
+    public List<LocationDto> getAllLocationsByAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String username = jwt.getClaim("preferred_username");
         int userId = getUserIdByUsername(username);
-        return locationRepository.findByUserIdAndDeletedFalse(userId).stream().map(LocationDto::fromLocation).toList();
+        return locationRepository.findByUserId(userId).stream().map(LocationDto::fromLocation).toList();
     }
+//    public List<LocationDto> getLocationsByAuthenticatedUser() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        int userId = getUserIdByUsername(username);
+//        return locationRepository.findByUserIdAndDeletedFalse(userId).stream().map(LocationDto::fromLocation).toList();
+//    }
 
     private int getUserIdByUsername(String username) {
         return 1;

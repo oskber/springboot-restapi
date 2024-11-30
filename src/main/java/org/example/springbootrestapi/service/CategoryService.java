@@ -39,4 +39,8 @@ public class CategoryService {
         categoryRepository.save(category);
         return category.getId();
     }
+
+    public boolean categoryExists(String name) {
+        return categoryRepository.findByName(name).isPresent();
+    }
 }

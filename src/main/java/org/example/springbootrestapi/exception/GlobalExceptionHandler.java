@@ -21,6 +21,24 @@ public class GlobalExceptionHandler {
         return problemDetails;
     }
 
+    @ExceptionHandler(CategoryAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ProblemDetail handleCategoryAlreadyExistsException(CategoryAlreadyExistsException ex) {
+        ProblemDetail problemDetails = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getLocalizedMessage());
+        problemDetails.setType(URI.create("http://localhost:8080/errors/category-already-exists"));
+        problemDetails.setTitle("Category Already Exists");
+        return problemDetails;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
+        ProblemDetail problemDetails = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getLocalizedMessage());
+        problemDetails.setType(URI.create("http://localhost:8080/errors/illegal-argument"));
+        problemDetails.setTitle("Illegal Argument");
+        return problemDetails;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ProblemDetail handleException(Exception ex) {
